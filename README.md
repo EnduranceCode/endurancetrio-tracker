@@ -13,6 +13,7 @@
 3. [Development](#development)
    1. [Technology Stack](#technology-stack)
    2. [Database](#database)
+   3. [Installation](#installation)
 4. [License](#license)
 
 ## Introduction
@@ -41,7 +42,7 @@ location information, making it ideal for fleet management, asset tracking, and 
 
 ### API Examples
 
-#### 1. Submit a Device Location (Authenticated)
+#### 1. Submit a device location (Authenticated)
 
 ```bash
 POST /tracker/v1/devices
@@ -184,6 +185,7 @@ This interface allows you to:
 - **Spring Boot 3.5.7** - Modern application framework with latest stable features
 - **Spring Data JPA** - Robust data persistence and repository abstraction
 - **H2 Database** - In-memory database for development and testing (To be replaced with PostgreSQL)
+- **Flyway** - Database migration and version control
 - **Spring Security** - API key authentication and security configuration
 - **SpringDoc OpenAPI** - Automated Swagger/OpenAPI documentation generation
 - **Maven** - Dependency management and build automation
@@ -212,6 +214,49 @@ During development, you can access the H2 database console at:
 
 > **Note:** The H2 database will be replaced with PostgreSQL in production environments.
 > All data in the development database is transient and reset when the application restarts.
+
+### Installation
+
+#### 1. Prerequisites
+
+- [Java 21](https://javaalmanac.io/jdk/21/) or higher
+- [Apache Maven](https://maven.apache.org/) (Latest stable release)
+
+#### 2. Clone the repository
+
+```bash
+git clone git@github.com:endurancetrio/endurancetrio-tracker.git
+cd endurancetrio-tracker
+```
+
+#### 3. Configure application secrets
+
+Create the `application-secrets.yaml` configuration file from the provided
+[template](./endurancetrio-app/src/main/resources/template-secrets.yaml), run the following command:
+
+```bash
+cp endurancetrio-app/src/main/resources/template-secrets.yaml endurancetrio-app/src/main/resources/application-secrets.yaml
+```
+Now, edit the `application-secrets.yaml` file:
+
+- **Set database credentials**: replace `{USER}` and `{PASSWORD}` with your desired values.
+
+#### 4. Build the project
+
+From the repository root, run the following command to compile the application and install
+its dependencies:
+
+```bash
+mvn clean install
+```
+
+#### 5. Run the application
+
+You can start the application using the provided shell script:
+
+```bash
+./springboot-run.sh
+```
 
 ## License
 

@@ -20,6 +20,8 @@
 
 package com.endurancetrio.app.config;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,13 +37,15 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.authorizeHttpRequests(
         authorization -> authorization.requestMatchers("/h2-tracker", "/h2-tracker/**")
-            .permitAll()  // Allow both path and subpaths
+            .permitAll()
             .anyRequest()
             .authenticated());
 
     http.csrf(csrf -> csrf.ignoringRequestMatchers("/h2-tracker", "/h2-tracker/**"));
 
     http.headers(headers -> headers.frameOptions(FrameOptionsConfig::disable));
+
+    http.formLogin(withDefaults());
 
     return http.build();
   }
