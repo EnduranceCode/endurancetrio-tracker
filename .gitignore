@@ -1,6 +1,6 @@
 # Project Specific
 # ----------------
-template-secrets.yaml
+application-secrets.yaml
 
 # Spring Boot
 # -----------
