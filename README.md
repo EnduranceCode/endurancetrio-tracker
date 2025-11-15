@@ -276,31 +276,39 @@ mvn clean install
 
 #### 5. Run the application
 
-The project includes a helper script, `spring-boot-run.sh`, which performs a full Maven build and
-then starts the application using `spring-boot:run` with the **local** profile enabled.
-You can start the application using:
-
-```bash
-./spring-boot-run.sh
-```
-
 The application uses Spring Boot profiles for environment-specific configuration:
 
 - `application-local.yaml` – Active during local development.
-- `application-dev.yaml` – To be used in development environments.
-- `application-prod.yaml` – To be used in production environments (Not ready yet).
+- `application-dev.yaml` – For development environments.
+- `application-prod.yaml` – For production environments (Not ready yet).
 
-You can manually activate a profile when running the application via:
+You can manually activate a profile when running the application with `spring-boot:run`:
 
 ```bash
 -Dspring-boot.run.profiles=local
 ```
 
-Or for standard JAR execution:
+Or. for standard JAR execution:
 
 ```bash
 -Dspring.profiles.active=dev
 ```
+
+A helper script, `spring-boot-run.sh`, is provided to streamline local development. It performs
+a full Maven build and then starts the application using `spring-boot:run` with the **local**
+profile enabled:
+
+```bash
+./spring-boot-run.sh
+```
+
+This project also includes an IntelliJ run configuration stored in the `.run/` folder. After opening
+the project in [IntelliJ](https://www.jetbrains.com/idea/), you will find a `TrackerApplication`
+entry in the *run/debug* configuration dropdown. Select it and run the application with
+`Shift + F10`, or use `Shift + F9` to run the application in debug mode.
+
+The run configuration uses the `local` Spring profile (`application-local.yaml`), so you can start
+developing immediately without additional setup.
 
 ## License
 
