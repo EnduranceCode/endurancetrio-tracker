@@ -18,10 +18,17 @@
 
 ## Introduction
 
-EnduranceTrio Tracker is a robust and modern REST API for managing IoT device locations. Built with
-Java 21 and Spring Boot, this service provides a scalable solution for tracking device GPS data with
-secure API key authentication. The API allows for efficient submission and retrieval of device
-location information, making it ideal for fleet management, asset tracking, and IoT applications.
+**EnduranceTrio Tracker** is a modern REST API designed for managing IoT device locations. Built
+with Java 21 and Spring Boot, the service provides a scalable and secure solution for submitting
+and retrieving GPS data using API key authentication. It is ideal for applications such as fleet
+management, asset tracking, and general IoT device monitoring.
+
+### Development Team
+
+This project was created by **Ricardo do Canto**, who is the lead developer and maintainer.
+
+[![GitHub](https://img.shields.io/badge/GitHub-EnduranceCode-orange?logo=github)](https://github.com/EnduranceCode)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Ricardo_do_Canto-blue?logo=linkedin)](https://www.linkedin.com/in/ricardodocanto/)
 
 ## Features
 
@@ -63,7 +70,7 @@ X-API-Key: api-key-here
 {
   "status": "CREATED",
   "code": 201, 
-  "message": "Request handled with success",
+  "message": "Request handled successfully",
   "data": {
     "device": "SDABC",
     "time": "2026-09-19T06:00:00Z",
@@ -72,7 +79,6 @@ X-API-Key: api-key-here
   }
 }
 ```
-}
 
 #### 2. Get last known location for all existing devices
 
@@ -87,7 +93,7 @@ Content-Type: application/json
 {
   "status": "OK",
   "code": 200,
-  "message": "Request handled with success",
+  "message": "Request handled successfully",
   "data": [
     {
       "device": "SDABC",
@@ -131,7 +137,7 @@ X-API-Key: api-key-here
 {
   "status": "OK",
   "code": 200,
-  "message": "Request handled with success",
+  "message": "Request handled successfully",
   "data": [
     {
       "device": "SDABC",
@@ -195,6 +201,15 @@ This interface allows you to:
 The application uses an **H2 in-memory database** for development and testing purposes,
 configured with PostgreSQL compatibility mode.
 
+The devices location entries are stored in a normalized table containing device ID, timestamp,
+latitude, and longitude.
+
+All database schema changes are managed with Flyway. Migration scripts are located in the
+`endurancetrio-data/src/main/resources/db/migration` folder and are automatically executed on
+application startup. As the project evolves, migrations will support both H2 (development) and
+PostgreSQL (production). The file [`DATABASE.md`](./endurancetrio-data/src/main/resources/db/DATABASE.md)
+documents the process to create and manage the database schema migrations.
+
 #### H2 Database Console
 
 During development, you can access the H2 database console at:
@@ -212,8 +227,10 @@ During development, you can access the H2 database console at:
 - **Persistence:** Data is cleared on application restart
 - **Purpose:** Development and testing environment
 
-> **Note:** The H2 database will be replaced with PostgreSQL in production environments.
-> All data in the development database is transient and reset when the application restarts.
+> **Note**
+>
+> The H2 database will be replaced with PostgreSQL in production environments.
+> All data in the development database is transient and will reset when the application restarts.
 
 ### Installation
 
@@ -232,7 +249,8 @@ cd endurancetrio-tracker
 #### 3. Configure application secrets
 
 Create the `application-secrets.yaml` configuration file from the provided
-[template](./endurancetrio-app/src/main/resources/template-secrets.yaml), run the following command:
+[template](./endurancetrio-app/src/main/resources/template-secrets.yaml), with the following
+command:
 
 ```bash
 cp endurancetrio-app/src/main/resources/template-secrets.yaml endurancetrio-app/src/main/resources/application-secrets.yaml
@@ -240,6 +258,12 @@ cp endurancetrio-app/src/main/resources/template-secrets.yaml endurancetrio-app/
 Now, edit the `application-secrets.yaml` file:
 
 - **Set database credentials**: replace `{USER}` and `{PASSWORD}` with your desired values.
+
+> **Security Notice**
+>
+> Never commit the application-secrets.yaml file, or any file containing credentials, to version
+> control.
+> Ensure that your `.gitignore` rules prevent accidental commits of sensitive configuration.
 
 #### 4. Build the project
 
@@ -252,13 +276,32 @@ mvn clean install
 
 #### 5. Run the application
 
-You can start the application using the provided shell script:
+The project includes a helper script, `spring-boot-run.sh`, which performs a full Maven build and
+then starts the application using `spring-boot:run` with the **development** profile enabled.
+You can start the application using:
 
 ```bash
-./springboot-run.sh
+./spring-boot-run.sh
+```
+
+The application uses Spring Boot profiles for environment-specific configuration:
+
+- `application-dev.yaml` – Active during local development.
+- `application-prod.yaml` – To be used in production environments.
+
+You can manually activate a profile when running the application via:
+
+```bash
+-Dspring-boot.run.profiles=dev
+```
+
+Or for standard JAR execution:
+
+```bash
+-Dspring.profiles.active=dev
 ```
 
 ## License
 
-This project is licensed under the Functional Source License, Version 1.1, ALv2 Future License.
-See the [`LICENSE.md`](./LICENSE.md) file for details.
+This project is licensed under the [Functional Source License](https://fsl.software/), Version 1.1,
+ALv2 Future License. See the [`LICENSE.md`](./LICENSE.md) file for details.
