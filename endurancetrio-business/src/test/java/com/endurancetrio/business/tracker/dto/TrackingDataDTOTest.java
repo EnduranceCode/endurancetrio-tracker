@@ -21,6 +21,7 @@
 package com.endurancetrio.business.tracker.dto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Instant;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,11 +36,12 @@ import org.junit.jupiter.api.Test;
  */
 class TrackingDataDTOTest {
 
+  private static final String OWNER = "system";
   private static final String DEVICE = "SDABC";
   private static final Instant TIME = Instant.parse("2026-09-19T06:00:00Z");
   private static final Double LATITUDE = 39.510058;
   private static final Double LONGITUDE = -9.136079;
-  private static final String OWNER = "system";
+  private static final Boolean IS_ACTIVE = true;
 
   private TrackingDataDTO underTest;
 
@@ -52,6 +54,7 @@ class TrackingDataDTOTest {
     underTest.setTime(TIME);
     underTest.setLatitude(LATITUDE);
     underTest.setLongitude(LONGITUDE);
+    underTest.setActive(IS_ACTIVE);
   }
 
   @Test
@@ -62,5 +65,6 @@ class TrackingDataDTOTest {
     assertEquals(TIME, underTest.getTime());
     assertEquals(LATITUDE, underTest.getLatitude());
     assertEquals(LONGITUDE, underTest.getLongitude());
+    assertTrue(underTest.isActive());
   }
 }

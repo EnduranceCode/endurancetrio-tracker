@@ -61,6 +61,9 @@ import org.hibernate.annotations.CreationTimestamp;
  *    {@link #getLongitude()} longitude : The longitude coordinate of the tracking point
  *  </li>
  *  <li>
+ *    {@link #isActive()} active : Flag indicating whether the device is active
+ *  </li>
+ *  <li>
  *    {@link #getCreatedAt()} createdAt : The timestamp when this record was created in the system
  *  </li>
  * </ul>
@@ -92,6 +95,9 @@ public class TrackingData {
   @Column(name = "longitude", nullable = false)
   private Double longitude;
 
+  @Column(name = "active", nullable = false)
+  private boolean active;
+
   @CreationTimestamp
   @Column(name = "created_at", updatable = false)
   private Instant createdAt;
@@ -101,12 +107,15 @@ public class TrackingData {
   }
 
   public TrackingData(
-      TrackerAccount account, String device, Instant time, Double latitude, Double longitude) {
+      TrackerAccount account, String device, Instant time, Double latitude, Double longitude,
+      boolean active
+  ) {
     this.account = account;
     this.device = device;
     this.time = time;
     this.latitude = latitude;
     this.longitude = longitude;
+    this.active = active;
   }
 
   public Long getId() {
@@ -157,6 +166,14 @@ public class TrackingData {
     this.longitude = longitude;
   }
 
+  public boolean isActive() {
+    return active;
+  }
+
+  public void setActive(boolean active) {
+    this.active = active;
+  }
+
   public Instant getCreatedAt() {
     return createdAt;
   }
@@ -191,6 +208,7 @@ public class TrackingData {
         .add("time=" + time)
         .add("latitude=" + latitude)
         .add("longitude=" + longitude)
+        .add("active=" + active)
         .add("createdAt=" + createdAt)
         .toString();
   }

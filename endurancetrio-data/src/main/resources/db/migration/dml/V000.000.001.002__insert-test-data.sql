@@ -26,11 +26,11 @@ INSERT INTO tracker_account (owner, account_key, enabled) VALUES
     ('system', 'TEST_ACCOUNT_KEY_1234567890', TRUE);
 
 -- Insert test data into tracking_data table
-INSERT INTO tracking_data (device, record_time, latitude, longitude, account) VALUES
-    ('SDABC', '2026-09-19T06:00:00Z', 39.510058, -9.136079, 'system'),
-    ('SDDEF', '2026-09-19T06:00:06Z', 39.509001, -9.139602, 'system'),
-    ('SDFGH', '2026-09-19T06:00:12Z', 39.509773, -9.140004, 'system'),
-    ('SDJKL', '2026-09-19T06:00:24Z', 39.511075, -9.136516, 'system'),
-    ('SDABC', '2026-09-19T06:06:00Z', 39.510071, -9.136071, 'system'),
-    ('SDABC', '2026-09-19T06:12:00Z', 39.510082, -9.136062, 'system'),
-    ('SDABC', '2026-09-19T06:24:00Z', 39.510093, -9.136053, 'system');
+INSERT INTO tracking_data (account, device, record_time, latitude, longitude, active) VALUES
+    ('system', 'SDABC', '2026-09-19T06:00:00Z', 39.510058, -9.136079, TRUE),
+    ('system', 'SDDEF', '2026-09-19T06:00:06Z', 39.509001, -9.139602, TRUE),
+    ('system', 'SDFGH', '2026-09-19T06:00:12Z', 39.509773, -9.140004, TRUE),
+    ('system', 'SDJKL', '2026-09-19T06:00:24Z', 39.511075, -9.136516, TRUE),
+    ('system', 'SDABC', '2026-09-19T06:06:00Z', 39.510071, -9.136071, TRUE),
+    ('system', 'SDABC', '2026-09-19T06:12:00Z', 39.510082, -9.136062, TRUE),
+    ('system', 'SDABC', '2026-09-19T06:24:00Z', 39.510093, -9.136053, TRUE);

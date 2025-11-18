@@ -22,6 +22,7 @@ package com.endurancetrio.business.tracker.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import com.endurancetrio.business.tracker.dto.TrackerAccountDTO;
@@ -39,12 +40,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class TrackingDataMapperTest {
 
+  private static final String OWNER = "system";
+  private static final String KEY = "TEST_ACCOUNT_KEY_1234567890";
+  private static final Boolean IS_ENABLED = true;
+
   private static final String DEVICE = "SDABC";
   private static final Instant TIME = Instant.parse("2026-09-19T06:00:00Z");
   private static final Double LATITUDE = 39.510058;
   private static final Double LONGITUDE = -9.136079;
-  private static final String OWNER = "system";
-  private static final String KEY = "TEST_ACCOUNT_KEY_1234567890";
+  private static final Boolean IS_ACTIVE = true;
 
   private TrackingData entityTest;
   private TrackingDataDTO dtoTest;
@@ -61,7 +65,7 @@ class TrackingDataMapperTest {
 
     Long testId = 1L;
 
-    account = new TrackerAccount(OWNER, KEY, true);
+    account = new TrackerAccount(OWNER, KEY, IS_ENABLED);
 
     entityTest = new TrackingData();
     entityTest.setId(testId);
@@ -70,6 +74,7 @@ class TrackingDataMapperTest {
     entityTest.setTime(TIME);
     entityTest.setLatitude(LATITUDE);
     entityTest.setLongitude(LONGITUDE);
+    entityTest.setActive(IS_ACTIVE);
 
     dtoTest = new TrackingDataDTO();
     dtoTest.setAccount(OWNER);
@@ -77,6 +82,7 @@ class TrackingDataMapperTest {
     dtoTest.setTime(TIME);
     dtoTest.setLatitude(LATITUDE);
     dtoTest.setLongitude(LONGITUDE);
+    dtoTest.setActive(IS_ACTIVE);
   }
 
   @Test
@@ -94,6 +100,7 @@ class TrackingDataMapperTest {
     assertEquals(TIME, result.getTime());
     assertEquals(LATITUDE, result.getLatitude());
     assertEquals(LONGITUDE, result.getLongitude());
+    assertTrue(result.isActive());
   }
 
   @Test
@@ -106,6 +113,7 @@ class TrackingDataMapperTest {
     assertEquals(TIME, result.getTime());
     assertEquals(LATITUDE, result.getLatitude());
     assertEquals(LONGITUDE, result.getLongitude());
+    assertTrue(result.isActive());
   }
 
   @Test

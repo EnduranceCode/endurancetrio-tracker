@@ -61,7 +61,8 @@ Authorization: Bearer api-key-here
   "device": "SDABC",
   "time": "2026-09-19T06:00:00Z",
   "lat": 39.510058,
-  "lon": -9.136079
+  "lon": -9.136079,
+  "active": true
 }
 ```
 
@@ -77,7 +78,8 @@ Authorization: Bearer api-key-here
     "device": "SDABC",
     "time": "2026-09-19T06:00:00Z",
     "lat": 39.510058,
-    "lon": -9.136079
+    "lon": -9.136079,
+    "active": true
   }
 }
 ```
@@ -102,28 +104,32 @@ Content-Type: application/json
       "device": "SDABC",
       "time": "2026-09-19T06:00:00Z",
       "lat": 39.510058,
-      "lon": -9.136079
+      "lon": -9.136079,
+      "active": true
     },
     {
       "account": "system",
       "device": "SDDEF",
       "time": "2026-09-19T06:00:06Z",
       "lat":  39.509001,
-      "lon": -9.139602
+      "lon": -9.139602,
+      "active": true
     },
     {
       "account": "system",
       "device": "SDFGH",
       "time": "2026-09-19T06:00:12Z",
       "lat": 39.509773,
-      "lon": -9.140004
+      "lon": -9.140004,
+      "active": true
     },
     {
       "account": "system",
       "device": "SDJKL",
       "time": "2026-09-19T06:00:24Z",
       "lat": 39.511075,
-      "lon":  -9.136516
+      "lon":  -9.136516,
+      "active": true
     }
   ]
 }
@@ -150,28 +156,32 @@ Authorization: Bearer api-key-here
       "device": "SDABC",
       "time": "2026-09-19T06:00:00Z",
       "lat": 39.510058,
-      "lon": -9.136079
+      "lon": -9.136079,
+      "active": true
     },
     {
       "account": "system",
       "device": "SDABC",
       "time": "2026-09-19T06:06:00Z",
       "lat": 39.510071,
-      "lon": -9.136071
+      "lon": -9.136071,
+      "active": true
     },
     {
       "account": "system",
       "device": "SDABC",
       "time": "2026-09-19T06:12:00Z",
       "lat": 39.510082,
-      "lon": -9.136062
+      "lon": -9.136062,
+      "active": true
     },
     {
       "account": "system",
       "device": "SDABC",
       "time": "2026-09-19T06:24:00Z",
       "lat": 39.510093,
-      "lon": -9.136053
+      "lon": -9.136053,
+      "active": true
     }
   ],
   "page": {

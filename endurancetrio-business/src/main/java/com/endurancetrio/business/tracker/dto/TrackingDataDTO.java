@@ -24,6 +24,7 @@ import com.endurancetrio.data.tracker.model.entity.TrackingData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import java.io.Serial;
@@ -53,6 +54,9 @@ import java.util.StringJoiner;
  *  <li>
  *    {@link #getLongitude()} longitude : The longitude coordinate of the tracking point
  *  </li>
+ *  <li>
+ *    {@link #isActive()} active : Flag indicating whether the device is active
+ *  </li>
  * </ul>
  */
 public class TrackingDataDTO implements Serializable {
@@ -64,7 +68,7 @@ public class TrackingDataDTO implements Serializable {
   @Size(min = 1, max = 50, message = "Account name must be between 1 and 50 characters")
   private String account;
 
-  @NotNull(message = "Device identifier cannot be null")
+  @NotBlank(message = "Device identifier is required")
   @Size(min = 1, max = 50, message = "Device identifier must be between 1 and 50 characters")
   private String device;
 
@@ -83,17 +87,22 @@ public class TrackingDataDTO implements Serializable {
   @JsonProperty("lon")
   private Double longitude;
 
+  private boolean active;
+
   public TrackingDataDTO() {
     super();
   }
 
   public TrackingDataDTO(
-      String account, String device, Instant time, Double latitude, Double longitude) {
+      String account, String device, Instant time, Double latitude, Double longitude,
+      boolean active
+  ) {
     this.account = account;
     this.device = device;
     this.time = time;
     this.latitude = latitude;
     this.longitude = longitude;
+    this.active = active;
   }
 
   public String getAccount() {
@@ -136,6 +145,14 @@ public class TrackingDataDTO implements Serializable {
     this.longitude = longitude;
   }
 
+  public boolean isActive() {
+    return active;
+  }
+
+  public void setActive(boolean active) {
+    this.active = active;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -147,12 +164,12 @@ public class TrackingDataDTO implements Serializable {
     TrackingDataDTO that = (TrackingDataDTO) o;
     return Objects.equals(account, that.account) && Objects.equals(device, that.device)
         && Objects.equals(time, that.time) && Objects.equals(latitude, that.latitude)
-        && Objects.equals(longitude, that.longitude);
+        && Objects.equals(longitude, that.longitude) && Objects.equals(active, that.active);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(account, device, time, latitude, longitude);
+    return Objects.hash(account, device, time, latitude, longitude, active);
   }
 
   @Override
@@ -163,6 +180,7 @@ public class TrackingDataDTO implements Serializable {
         .add("time=" + time)
         .add("latitude=" + latitude)
         .add("longitude=" + longitude)
+        .add("active=" + active)
         .toString();
   }
 }

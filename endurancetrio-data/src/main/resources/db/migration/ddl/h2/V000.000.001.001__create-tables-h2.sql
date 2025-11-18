@@ -45,6 +45,7 @@ CREATE TABLE tracking_data (
   record_time TIMESTAMP        NOT NULL,
   latitude    DOUBLE PRECISION NOT NULL,
   longitude   DOUBLE PRECISION NOT NULL,
+  active      BOOLEAN          NOT NULL,
   created_at  TIMESTAMP        DEFAULT CURRENT_TIMESTAMP
 );
 
