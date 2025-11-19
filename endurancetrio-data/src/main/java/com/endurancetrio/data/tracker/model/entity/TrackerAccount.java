@@ -20,12 +20,12 @@
 
 package com.endurancetrio.data.tracker.model.entity;
 
+import com.endurancetrio.data.common.model.entity.AuditableEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.io.Serial;
-import java.io.Serializable;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -44,11 +44,23 @@ import java.util.StringJoiner;
  *   <li>
  *     {@link #isEnabled()} enabled : Flag indicating whether the account is active
  *   </li>
+ *  <li>
+ *    {@link #getVersion()} version : The version number for optimistic locking,
+ *    inherited from {@link AuditableEntity}.
+ *  </li>
+ *  <li>
+ *    {@link #getCreatedAt()} createdAt : The system timestamp of creation,
+ *    inherited from {@link AuditableEntity}.
+ *  </li>
+ *  <li>
+ *    {@link #getUpdatedAt()} updatedAt : The system timestamp of the last update,
+ *    inherited from {@link AuditableEntity}.
+ *  </li>
  * </ul>
  */
 @Entity
 @Table(name = "tracker_account")
-public class TrackerAccount implements Serializable {
+public class TrackerAccount extends AuditableEntity {
 
   @Serial
   private static final long serialVersionUID = 1L;
@@ -102,11 +114,19 @@ public class TrackerAccount implements Serializable {
     if (this == o) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+
+    if (!(o instanceof TrackerAccount that)) {
       return false;
     }
-    TrackerAccount that = (TrackerAccount) o;
-    return Objects.equals(owner, that.owner);
+
+    Class<?> thisClass = org.hibernate.Hibernate.getClass(this);
+    Class<?> thatClass = org.hibernate.Hibernate.getClass(that);
+
+    if (thisClass != thatClass) {
+      return false;
+    }
+
+    return owner != null && owner.equals(that.getOwner());
   }
 
   @Override
@@ -116,7 +136,7 @@ public class TrackerAccount implements Serializable {
 
   @Override
   public String toString() {
-    return new StringJoiner(", ", TrackingData.class.getSimpleName() + "[", "]")
+    return new StringJoiner(", ", getClass().getSimpleName() + "[", "]")
         .add("owner='" + owner + "'")
         .add("enabled=" + enabled)
         .toString();

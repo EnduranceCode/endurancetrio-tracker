@@ -29,6 +29,18 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * Security configuration for the application.
+ * <p>
+ * This configuration sets up security rules for HTTP requests, including:
+ * <ul>
+ *   <li>Permitting all requests to the H2 database console endpoints.</li>
+ *   <li>Requiring authentication for all other requests.</li>
+ *   <li>Disabling CSRF protection for the H2 console endpoints to allow access.</li>
+ *   <li>Disabling frame options headers to enable the H2 console to be displayed in a frame.</li>
+ *   <li>Enabling form-based login for user authentication.</li>
+ * </ul>
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {

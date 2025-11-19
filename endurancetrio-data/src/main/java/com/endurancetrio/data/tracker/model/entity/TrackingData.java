@@ -20,20 +20,18 @@
 
 package com.endurancetrio.data.tracker.model.entity;
 
+import com.endurancetrio.data.common.model.entity.AuditableEntity;
+import com.endurancetrio.data.common.model.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import java.io.Serial;
 import java.time.Instant;
-import java.util.Objects;
 import java.util.StringJoiner;
-import org.hibernate.annotations.CreationTimestamp;
 
 /**
  * The {@link TrackingData} represents a geographic tracking point recorded by a device at a
@@ -64,20 +62,28 @@ import org.hibernate.annotations.CreationTimestamp;
  *    {@link #isActive()} active : Flag indicating whether the device is active
  *  </li>
  *  <li>
- *    {@link #getCreatedAt()} createdAt : The timestamp when this record was created in the system
+ *    {@link #getVersion()} version : The version number for optimistic locking,
+ *    inherited from {@link AuditableEntity}.
+ *  </li>
+ *  <li>
+ *    {@link #getCreatedAt()} createdAt : The system timestamp of creation,
+ *    inherited from {@link AuditableEntity}.
+ *  </li>
+ *  <li>
+ *    {@link #getUpdatedAt()} updatedAt : The system timestamp of the last update,
+ *    inherited from {@link AuditableEntity}.
  *  </li>
  * </ul>
  */
 @Entity
 @Table(name = "tracking_data")
-public class TrackingData {
+@SequenceGenerator(
+    name = "seq_endurancetrio_generator", sequenceName = "seq_tracking_data_id", allocationSize = 5
+)
+public class TrackingData extends BaseEntity<Long> {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_tracking_data")
-  @SequenceGenerator(
-      name = "seq_tracking_data", sequenceName = "seq_tracking_data_id", allocationSize = 5
-  )
-  private Long id;
+  @Serial
+  private static final long serialVersionUID = 1L;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "account", nullable = false)
@@ -98,10 +104,6 @@ public class TrackingData {
   @Column(name = "active", nullable = false)
   private boolean active;
 
-  @CreationTimestamp
-  @Column(name = "created_at", updatable = false)
-  private Instant createdAt;
-
   public TrackingData() {
     super();
   }
@@ -116,14 +118,6 @@ public class TrackingData {
     this.latitude = latitude;
     this.longitude = longitude;
     this.active = active;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
   }
 
   public TrackerAccount getAccount() {
@@ -174,42 +168,27 @@ public class TrackingData {
     this.active = active;
   }
 
-  public Instant getCreatedAt() {
-    return createdAt;
-  }
-
-  public void setCreatedAt(Instant createdAt) {
-    this.createdAt = createdAt;
-  }
-
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    TrackingData that = (TrackingData) o;
-    return Objects.equals(id, that.id) && Objects.equals(device, that.device) && Objects.equals(
-        time, that.time);
+    return super.equals(o);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, device, time);
+    return super.hashCode();
   }
 
   @Override
   public String toString() {
-    return new StringJoiner(", ", TrackingData.class.getSimpleName() + "[", "]").add("id=" + id)
-        .add("account='" + account.getOwner() + "'")
+    return new StringJoiner(", ", getClass().getSimpleName() + "[", "]")
+        .add("id=" + this.getId())
+        .add("account='" + (account != null ? account.getOwner() : null) + "'")
         .add("device='" + device + "'")
         .add("time=" + time)
         .add("latitude=" + latitude)
         .add("longitude=" + longitude)
         .add("active=" + active)
-        .add("createdAt=" + createdAt)
+        .add("createdAt=" + this.getCreatedAt())
         .toString();
   }
 }

@@ -21,16 +21,21 @@
 -- Description: Creates the EnduranceTrio Tracker REST API database tables
 --
 
+-- Create and use the schema for the EnduranceTrio Tracker
 CREATE SCHEMA IF NOT EXISTS endurancetrio_tracker;
+USE endurancetrio_tracker;
 
 -- Create sequence for tracking tracking data primary key
 CREATE SEQUENCE IF NOT EXISTS seq_tracking_data_id START WITH 1 INCREMENT BY 5;
 
 -- Create the tracker_account table
 CREATE TABLE tracker_account (
-    owner       VARCHAR(50)  NOT NULL,
-    account_key VARCHAR(100) NOT NULL,
-    enabled     BOOLEAN      NOT NULL
+  owner       VARCHAR(50)  NOT NULL,
+  account_key VARCHAR(100) NOT NULL,
+  enabled     BOOLEAN      NOT NULL,
+  version     INTEGER      NOT NULL DEFAULT 0,
+  created_at  TIMESTAMP    NOT NULL,
+  updated_at  TIMESTAMP
 );
 
 -- Create primary key and unique constraints on the tracker_account table
@@ -39,14 +44,16 @@ ALTER TABLE tracker_account ADD CONSTRAINT uk_tracker_account_key UNIQUE (accoun
 
 -- Create the tracking data table
 CREATE TABLE tracking_data (
-  id          BIGINT           NOT NULL DEFAULT NEXT VALUE FOR seq_tracking_data_id,
+  id          BIGINT           NOT NULL,
   account     VARCHAR(50)      NOT NULL,
   device      VARCHAR(50)      NOT NULL,
   record_time TIMESTAMP        NOT NULL,
   latitude    DOUBLE PRECISION NOT NULL,
   longitude   DOUBLE PRECISION NOT NULL,
   active      BOOLEAN          NOT NULL,
-  created_at  TIMESTAMP        DEFAULT CURRENT_TIMESTAMP
+  version     INTEGER          NOT NULL DEFAULT 0,
+  created_at  TIMESTAMP        NOT NULL,
+  updated_at  TIMESTAMP
 );
 
 -- Create primary key, foreign key, constraints and indexes on the tracking_data table
